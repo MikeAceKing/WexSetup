@@ -25,6 +25,60 @@ const BRIDGE_SCRIPT: &str = r#"
     openExternal,
     openBrowserWindow,
   });
+
+  const isHttpUrl = (value) => /^https?:\/\//i.test(String(value || '').trim());
+  const isExternalScheme = (value) => /^(mailto:|tel:)/i.test(String(value || '').trim());
+  const originalOpen = typeof window.open === 'function' ? window.open.bind(window) : null;
+
+  window.open = function patchedOpen(url, target, features) {
+    const nextUrl = String(url || '').trim();
+    if (!nextUrl) {
+      return originalOpen ? originalOpen(url, target, features) : null;
+    }
+
+    if (isHttpUrl(nextUrl)) {
+      openBrowserWindow(nextUrl, nextUrl);
+      return null;
+    }
+
+    if (isExternalScheme(nextUrl)) {
+      openExternal(nextUrl);
+      return null;
+    }
+
+    return originalOpen ? originalOpen(url, target, features) : null;
+  };
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      const path = event.composedPath ? event.composedPath() : [];
+      const anchor = path.find((node) => node instanceof HTMLAnchorElement && node.href);
+      if (!anchor) return;
+
+      const href = String(anchor.href || '').trim();
+      if (!href) return;
+
+      const wantsNewWindow =
+        anchor.target === '_blank' ||
+        anchor.hasAttribute('download') ||
+        anchor.dataset?.wexioDesktopOpen === 'new-window';
+
+      if (isHttpUrl(href) && wantsNewWindow) {
+        event.preventDefault();
+        event.stopPropagation();
+        openBrowserWindow(href, anchor.textContent?.trim() || href);
+        return;
+      }
+
+      if (isExternalScheme(href)) {
+        event.preventDefault();
+        event.stopPropagation();
+        openExternal(href);
+      }
+    },
+    true
+  );
 })();
 "#;
 
@@ -51,6 +105,7 @@ fn open_wexsearch_window(app: AppHandle, url: String, title: Option<String>) -> 
     .title(title.unwrap_or_else(|| "WexSearch".to_string()))
     .inner_size(1280.0, 800.0)
     .resizable(true)
+    .visible(true)
     .build()
     .map(|_| ())
     .map_err(|error| error.to_string())

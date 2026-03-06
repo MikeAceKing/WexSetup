@@ -14,6 +14,9 @@
     "allowlist": {
       "shell": {
         "open": true
+      },
+      "window": {
+        "create": true
       }
     },
     "bundle": {
@@ -37,9 +40,12 @@
     "windows": [
       {
         "title": "Wexio Desktop",
-        "width": 1280,
-        "height": 800,
-        "resizable": true
+        "width": 1600,
+        "height": 1000,
+        "fullscreen": true,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false
       }
     ]
   }
