@@ -1,0 +1,40 @@
+{
+  "build": {
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "devPath": "../web/index.html",
+    "distDir": "../web"
+  },
+  "package": {
+    "productName": "Wexio Desktop",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "category": "Business",
+      "identifier": "be.wexio.desktop",
+      "targets": [
+        "nsis",
+        "dmg",
+        "appimage"
+      ],
+      "icon": [
+        "icons/icon.ico",
+        "icons/icon.icns",
+        "icons/icon.png"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "Wexio Desktop",
+        "width": 1280,
+        "height": 800,
+        "resizable": true
+      }
+    ]
+  }
+}
