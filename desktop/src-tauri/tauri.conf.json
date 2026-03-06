@@ -3,13 +3,19 @@
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
     "devPath": "../web/index.html",
-    "distDir": "../web"
+    "distDir": "../web",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "Wexio Desktop",
     "version": "1.0.0"
   },
   "tauri": {
+    "allowlist": {
+      "shell": {
+        "open": true
+      }
+    },
     "bundle": {
       "active": true,
       "category": "Business",
