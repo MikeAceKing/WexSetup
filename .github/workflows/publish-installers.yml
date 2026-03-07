@@ -1,6 +1,16 @@
 name: Publish Desktop Installers
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/publish-installers.yml'
+      - 'desktop/**'
+      - 'site/**'
+      - 'installers/**'
+      - 'Dockerfile'
+      - 'nginx.conf'
   workflow_dispatch:
     inputs:
       ref:
