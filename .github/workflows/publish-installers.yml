@@ -18,6 +18,10 @@ on:
         required: false
         default: main
 
+concurrency:
+  group: publish-installers-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -86,11 +90,21 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            libwebkit2gtk-4.0-dev \
-            libappindicator3-dev \
+            libgtk-3-dev \
             librsvg2-dev \
             patchelf \
-            libgtk-3-dev
+            libssl-dev \
+            libfuse2
+          if apt-cache show libwebkit2gtk-4.1-dev > /dev/null 2>&1; then
+            sudo apt-get install -y libwebkit2gtk-4.1-dev
+          else
+            sudo apt-get install -y libwebkit2gtk-4.0-dev
+          fi
+          if apt-cache show libayatana-appindicator3-dev > /dev/null 2>&1; then
+            sudo apt-get install -y libayatana-appindicator3-dev
+          else
+            sudo apt-get install -y libappindicator3-dev
+          fi
 
       - name: Install desktop dependencies
         working-directory: desktop
