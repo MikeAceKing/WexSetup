@@ -108,8 +108,8 @@
       </div>
 
       <div class="actions">
-        <a id="download-link" class="button primary" href="/linux/WexioDesktop.AppImage" aria-disabled="true">Download for Linux</a>
-        <a class="button" href="/">Back to downloads</a>
+        <a id="download-link" class="button primary" href="https://download.wexio.be/linux/WexioDesktop.AppImage" aria-disabled="true">Download for Linux</a>
+        <a class="button" href="https://download.wexio.be/">Back to downloads</a>
       </div>
 
       <p class="hint">
@@ -118,7 +118,7 @@
     </section>
 
     <script>
-      const artifactPath = "/linux/WexioDesktop.AppImage";
+      const artifactPath = "https://download.wexio.be/linux/WexioDesktop.AppImage";
       const link = document.getElementById("download-link");
       const title = document.getElementById("status-title");
       const copy = document.getElementById("status-copy");
@@ -128,12 +128,12 @@
           if (!response.ok) throw new Error("missing");
           link.removeAttribute("aria-disabled");
           title.textContent = "Installer available";
-          copy.innerHTML = "Starting download from <code>/linux/WexioDesktop.AppImage</code>.";
+          copy.innerHTML = "Starting download from <code>https://download.wexio.be/linux/WexioDesktop.AppImage</code>.";
           window.location.replace(artifactPath);
         })
         .catch(() => {
           title.textContent = "Installer not uploaded yet";
-          copy.innerHTML = "Add the real binary at <code>/linux/WexioDesktop.AppImage</code> and redeploy Railway.";
+          copy.innerHTML = "Add the real binary at <code>https://download.wexio.be/linux/WexioDesktop.AppImage</code> and redeploy Railway.";
         });
     </script>
   </body>

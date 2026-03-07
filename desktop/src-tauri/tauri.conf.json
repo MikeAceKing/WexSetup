@@ -42,7 +42,7 @@
         "title": "Wexio Desktop",
         "width": 1600,
         "height": 1000,
-        "fullscreen": true,
+        "maximized": true,
         "resizable": true,
         "decorations": false,
         "transparent": false

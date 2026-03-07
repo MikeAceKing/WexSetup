@@ -5,8 +5,6 @@ use tauri::{AppHandle, Manager, WindowBuilder, WindowUrl};
 
 const BRIDGE_SCRIPT: &str = r#"
 (() => {
-  const CONTROL_BAR_ID = '__wexio_desktop_controls__';
-
   const openExternal = (url) => {
     if (window.__TAURI__?.invoke) {
       return window.__TAURI__.invoke('open_external_url', { url });
@@ -97,80 +95,6 @@ const BRIDGE_SCRIPT: &str = r#"
     },
     true
   );
-
-  const injectControls = () => {
-    if (!document.body || document.getElementById(CONTROL_BAR_ID)) return;
-
-    const style = document.createElement('style');
-    style.textContent = `
-      #${CONTROL_BAR_ID} {
-        position: fixed;
-        top: 14px;
-        right: 14px;
-        z-index: 2147483647;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        padding: 8px 10px;
-        border-radius: 999px;
-        background: rgba(11, 18, 32, 0.86);
-        border: 1px solid rgba(148, 163, 184, 0.28);
-        backdrop-filter: blur(14px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
-        font-family: system-ui, sans-serif;
-      }
-
-      #${CONTROL_BAR_ID} button {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        background: rgba(30, 41, 59, 0.92);
-        color: #e2e8f0;
-        padding: 8px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 1;
-        cursor: pointer;
-      }
-
-      #${CONTROL_BAR_ID} button:hover {
-        background: rgba(37, 99, 235, 0.95);
-        color: white;
-      }
-    `;
-
-    const controls = document.createElement('div');
-    controls.id = CONTROL_BAR_ID;
-    controls.setAttribute('data-wexio-desktop-controls', 'true');
-    controls.innerHTML = `
-      <button type="button" data-action="desktop">Desktop</button>
-      <button type="button" data-action="minimize">Minimize</button>
-    `;
-
-    controls.addEventListener('click', (event) => {
-      const button = event.target instanceof HTMLElement ? event.target.closest('button') : null;
-      const action = button?.getAttribute('data-action');
-      if (action === 'desktop') {
-        exitToDesktop();
-      }
-      if (action === 'minimize') {
-        minimizeWindow();
-      }
-    });
-
-    document.head.appendChild(style);
-    document.body.appendChild(controls);
-  };
-
-  const bootControls = () => {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', injectControls, { once: true });
-      return;
-    }
-    injectControls();
-  };
-
-  bootControls();
 })();
 "#;
 
@@ -193,14 +117,18 @@ fn open_wexsearch_window(app: AppHandle, url: String, title: Option<String>) -> 
             .as_millis()
     );
 
-    WindowBuilder::new(&app, label, WindowUrl::External(parsed_url))
+    let window = WindowBuilder::new(&app, label, WindowUrl::External(parsed_url))
         .title(title.unwrap_or_else(|| "WexSearch".to_string()))
         .inner_size(1280.0, 800.0)
         .resizable(true)
         .visible(true)
+        .focused(true)
+        .center()
         .build()
-        .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| error.to_string())?;
+
+    let _ = window.set_focus();
+    Ok(())
 }
 
 #[tauri::command]

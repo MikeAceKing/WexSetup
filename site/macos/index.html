@@ -108,8 +108,8 @@
       </div>
 
       <div class="actions">
-        <a id="download-link" class="button primary" href="/macos/WexioDesktop.dmg" aria-disabled="true">Download for macOS</a>
-        <a class="button" href="/">Back to downloads</a>
+        <a id="download-link" class="button primary" href="https://download.wexio.be/macos/WexioDesktop.dmg" aria-disabled="true">Download for macOS</a>
+        <a class="button" href="https://download.wexio.be/">Back to downloads</a>
       </div>
 
       <p class="hint">
@@ -118,7 +118,7 @@
     </section>
 
     <script>
-      const artifactPath = "/macos/WexioDesktop.dmg";
+      const artifactPath = "https://download.wexio.be/macos/WexioDesktop.dmg";
       const link = document.getElementById("download-link");
       const title = document.getElementById("status-title");
       const copy = document.getElementById("status-copy");
@@ -128,12 +128,12 @@
           if (!response.ok) throw new Error("missing");
           link.removeAttribute("aria-disabled");
           title.textContent = "Installer available";
-          copy.innerHTML = "Starting download from <code>/macos/WexioDesktop.dmg</code>.";
+          copy.innerHTML = "Starting download from <code>https://download.wexio.be/macos/WexioDesktop.dmg</code>.";
           window.location.replace(artifactPath);
         })
         .catch(() => {
           title.textContent = "Installer not uploaded yet";
-          copy.innerHTML = "Add the real binary at <code>/macos/WexioDesktop.dmg</code> and redeploy Railway.";
+          copy.innerHTML = "Add the real binary at <code>https://download.wexio.be/macos/WexioDesktop.dmg</code> and redeploy Railway.";
         });
     </script>
   </body>
