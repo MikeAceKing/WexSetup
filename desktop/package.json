@@ -5,7 +5,13 @@
   "scripts": {
     "tauri": "tauri",
     "build": "tauri build",
-    "dev": "tauri dev"
+    "dev": "tauri dev",
+    "build:windows": "tauri build -- --bundles nsis,msi",
+    "build:macos": "tauri build -- --bundles app,dmg",
+    "build:ubuntu": "tauri build -- --bundles deb,appimage",
+    "install:windows": "powershell -ExecutionPolicy Bypass -File ./scripts/install-windows.ps1",
+    "install:macos": "bash ./scripts/install-macos.sh",
+    "install:ubuntu": "bash ./scripts/install-ubuntu.sh"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.6.3"

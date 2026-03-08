@@ -4,42 +4,58 @@ Desktop distribution repository for Wexio.
 
 ## Purpose
 
-- host Windows, macOS, and Linux desktop installer artifacts
-- publish download metadata for `download.wexio.be`
-- separate desktop packaging work from the main Wexio application repo
-- keep the Railway download domain independent from the main Wexio app
+- build and publish Windows, macOS, and Linux desktop installers
+- host the download surface for `download.wexio.be`
+- keep desktop packaging separate from the main Wexio application repo
+- ship the bridge-enabled Tauri runtime that connects Wexio to safe local OS actions
 
-## Planned artifacts
+## Included runtime
 
-- `WexioSetup.exe`
-- `WexioDesktop.dmg`
-- `WexioDesktop.AppImage`
+The desktop app under `desktop/` is no longer just a thin browser shell. It now provides:
 
-## Structure
+- the native Wexio desktop window for `https://ui.wexio.be`
+- a localhost bridge on port `47821`
+- approved local app launch, file open, URL open, and safe command execution
+- system info for the Wexio desktop integration layer
 
-- `site/` static download surface
-- `desktop/` Tauri desktop wrapper
+## Artifacts
+
 - `installers/windows/WexioSetup.exe`
 - `installers/macos/WexioDesktop.dmg`
 - `installers/linux/WexioDesktop.AppImage`
 
-## Build status
+## Structure
 
-This repository now contains the Tauri scaffold and static download routes.
-Native installers are not committed yet. The platform pages auto-check whether
-the expected artifact file exists and only start the download when it is present.
+- `site/` static download surface
+- `desktop/` Tauri desktop runtime and bridge
+- `installers/windows/WexioSetup.exe`
+- `installers/macos/WexioDesktop.dmg`
+- `installers/linux/WexioDesktop.AppImage`
 
-## Cross-platform publishing
+## Build and publish flow
 
-Use the GitHub Actions workflow `Publish Desktop Installers` to build native
-installers on the correct operating systems and publish them back into this repo:
+Pushes to `main` that touch desktop, site, installers, or deployment files trigger the `Publish Desktop Installers` workflow. That workflow:
 
-- Windows runner -> `installers/windows/WexioSetup.exe`
-- macOS runner -> `installers/macos/WexioDesktop.dmg`
-- Ubuntu runner -> `installers/linux/WexioDesktop.AppImage`
+- builds on Windows, macOS, and Ubuntu runners
+- collects native installer bundles
+- commits updated installers back into this repo with `Publish desktop installers [skip ci]`
 
-The workflow is manual by design. Run it from the Actions tab after desktop
-changes are pushed to `main`.
+### Local build commands
+
+From `desktop/`:
+
+- `npm install`
+- `npm run build:windows`
+- `npm run build:macos`
+- `npm run build:ubuntu`
+
+### Local install commands
+
+From `desktop/`:
+
+- Windows: `npm run install:windows`
+- macOS: `npm run install:macos`
+- Ubuntu: `npm run install:ubuntu`
 
 ## Railway
 
@@ -51,7 +67,7 @@ Public routes:
 - `https://download.wexio.be/macos/`
 - `https://download.wexio.be/linux/`
 
-Direct artifact routes once binaries exist:
+Direct artifact routes:
 
 - `https://download.wexio.be/windows/WexioSetup.exe`
 - `https://download.wexio.be/macos/WexioDesktop.dmg`

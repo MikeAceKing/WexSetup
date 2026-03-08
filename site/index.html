@@ -6,7 +6,7 @@
     <title>Download Wexio Desktop</title>
     <meta
       name="description"
-      content="Download the Wexio desktop runtime for Windows, macOS, and Linux."
+      content="Download the Wexio desktop runtime and localhost bridge for Windows, macOS, and Linux."
     />
     <style>
       :root {
@@ -218,23 +218,23 @@
           <div class="eyebrow">Wexio Desktop Runtime</div>
           <h1>Download Wexio Setup</h1>
           <p class="lede">
-            This domain is setup-only. It serves the desktop download surface for Wexio on Windows, macOS and Linux.
+            Install the native Wexio desktop runtime for Windows, macOS, and Linux. The desktop app includes the local bridge used by Wexio OS to open approved apps, files, links, and system tools from the workspace.
           </p>
           <ul class="checks">
-            <li>Use this domain only for installer delivery and desktop runtime onboarding.</li>
-            <li>The main product stays on the Wexio app domain.</li>
-            <li>The desktop runtime enables the real in-Wexio browser and CloudOS desktop experience.</li>
+            <li>Use this domain for installer delivery and desktop runtime onboarding.</li>
+            <li>The main product and tenant workspace stay on the Wexio app domain.</li>
+            <li>The desktop runtime enables the native in-Wexio browser plus the localhost desktop bridge.</li>
           </ul>
         </div>
 
         <aside class="panel status">
           <h2>Deployment status</h2>
           <p>
-            This repository is intentionally static. Railway should deploy it through the included Dockerfile, not via language autodetection.
+            This repository is intentionally static. Railway should deploy it through the included Dockerfile, while GitHub Actions builds and republishes the native installers.
           </p>
           <div class="status-card">
-            <strong>Why there is no setup download yet</strong>
-            The domain can be live before any native installer exists. The platform pages now check the expected artifact path and only trigger the download when the real file is present.
+            <strong>Bridge-enabled installers</strong>
+            The published installers now package the Wexio desktop runtime together with the localhost bridge used by Wexio OS desktop integrations.
           </div>
           <p class="footnote">
             Public Railway URLs should stay on HTTPS only. Do not use <code>:8080</code> from outside Railway.
@@ -245,7 +245,7 @@
       <section class="downloads">
         <article class="download-card">
           <h3>Download for Windows</h3>
-          <p>Windows desktop installer for the Wexio runtime.</p>
+          <p>Windows installer for the native Wexio runtime and local desktop bridge.</p>
           <div class="path">https://download.wexio.be/windows</div>
           <div class="actions">
             <a class="button primary" href="https://download.wexio.be/windows/">Open Windows page</a>
@@ -254,7 +254,7 @@
 
         <article class="download-card">
           <h3>Download for macOS</h3>
-          <p>macOS disk image for the Wexio desktop runtime.</p>
+          <p>macOS disk image for the Wexio runtime and localhost desktop bridge.</p>
           <div class="path">https://download.wexio.be/macos</div>
           <div class="actions">
             <a class="button primary" href="https://download.wexio.be/macos/">Open macOS page</a>
@@ -263,7 +263,7 @@
 
         <article class="download-card">
           <h3>Download for Linux</h3>
-          <p>Linux AppImage build for the Wexio desktop runtime.</p>
+          <p>Linux AppImage build for the Wexio runtime and localhost desktop bridge.</p>
           <div class="path">https://download.wexio.be/linux</div>
           <div class="actions">
             <a class="button primary" href="https://download.wexio.be/linux/">Open Linux page</a>
