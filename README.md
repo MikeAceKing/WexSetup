@@ -7,16 +7,16 @@ Desktop distribution repository for Wexio.
 - build and publish Windows, macOS, and Linux desktop installers
 - host the download surface for `download.wexio.be`
 - keep desktop packaging separate from the main Wexio application repo
-- ship the bridge-enabled Tauri runtime that connects Wexio to safe local OS actions
+- ship the native Tauri runtime that hosts Wexio as a desktop workspace
 
 ## Included runtime
 
-The desktop app under `desktop/` is no longer just a thin browser shell. It now provides:
+The desktop app under `desktop/` provides:
 
 - the native Wexio desktop window for `https://ui.wexio.be`
-- a localhost bridge on port `47821`
-- approved local app launch, file open, URL open, and safe command execution
-- system info for the Wexio desktop integration layer
+- Tauri window controls for minimize, maximize, close, and desktop/minimize behavior
+- web applications opened inside Wexio webview windows
+- the desktop runtime needed for the in-Wexio web workspace experience
 
 ## Artifacts
 
@@ -27,7 +27,7 @@ The desktop app under `desktop/` is no longer just a thin browser shell. It now 
 ## Structure
 
 - `site/` static download surface
-- `desktop/` Tauri desktop runtime and bridge
+- `desktop/` Tauri desktop runtime
 - `installers/windows/WexioSetup.exe`
 - `installers/macos/WexioDesktop.dmg`
 - `installers/linux/WexioDesktop.AppImage`

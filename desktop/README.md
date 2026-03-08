@@ -1,20 +1,13 @@
 # Wexio Desktop
 
-Bridge-enabled Tauri desktop runtime for Wexio. It opens the hosted Wexio workspace in a native window and exposes a localhost bridge on port `47821` so Wexio can launch approved local apps, open files and URLs, and read basic machine info when the desktop app is installed.
+Native Tauri desktop runtime for Wexio. It opens the hosted Wexio workspace in a native window, provides desktop window controls, and opens web applications inside dedicated Wexio webview windows.
 
 ## Features
 
 - native Wexio desktop window for `https://ui.wexio.be`
-- localhost bridge endpoints:
-  - `GET /health`
-  - `GET /system/info`
-  - `POST /launch/app`
-  - `POST /open/url`
-  - `POST /open/file`
-  - `POST /command/execute`
-  - `GET /ws`
-- request origin validation for `*.wexio.*`, `localhost`, and `127.0.0.1`
-- fixed allowlists for desktop app launch and system command execution
+- native window controls for minimize, maximize, close, and desktop/minimize behavior
+- in-Wexio browser windows for websites opened from Wexio OS and WexSearch
+- browser-style fallback for external links when the runtime cannot keep them inside Wexio
 
 ## Prerequisites
 
