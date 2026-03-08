@@ -4,9 +4,35 @@ use tauri::{api::shell, AppHandle, Manager, WindowBuilder, WindowUrl};
 
 const BRIDGE_SCRIPT: &str = r#"
 (() => {
+  const resolveInvoke = () => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const tauriGlobal = window.__TAURI__;
+    if (!tauriGlobal) {
+      return null;
+    }
+
+    if (typeof tauriGlobal.invoke === 'function') {
+      return tauriGlobal.invoke.bind(tauriGlobal);
+    }
+
+    if (typeof tauriGlobal.tauri?.invoke === 'function') {
+      return tauriGlobal.tauri.invoke.bind(tauriGlobal.tauri);
+    }
+
+    if (typeof tauriGlobal.core?.invoke === 'function') {
+      return tauriGlobal.core.invoke.bind(tauriGlobal.core);
+    }
+
+    return null;
+  };
+
   const invoke = (command, payload = {}) => {
-    if (window.__TAURI__?.invoke) {
-      return window.__TAURI__.invoke(command, payload);
+    const runtimeInvoke = resolveInvoke();
+    if (runtimeInvoke) {
+      return runtimeInvoke(command, payload);
     }
     return Promise.reject(new Error('Tauri bridge unavailable'));
   };
