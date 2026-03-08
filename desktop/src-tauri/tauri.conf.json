@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Wexio Desktop",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -23,8 +23,10 @@
       "active": true,
       "category": "Business",
       "identifier": "be.wexio.desktop",
+      "publisher": "Wexio",
       "targets": [
         "nsis",
+        "msi",
         "dmg",
         "appimage"
       ],

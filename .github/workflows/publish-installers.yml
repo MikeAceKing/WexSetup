@@ -118,6 +118,40 @@ jobs:
         working-directory: desktop
         run: npm ci
 
+      - name: Import Windows signing certificate
+        if: runner.os == 'Windows' && secrets.WINDOWS_CERTIFICATE != '' && secrets.WINDOWS_CERTIFICATE_PASSWORD != ''
+        shell: pwsh
+        run: |
+          $certificatePath = Join-Path $env:RUNNER_TEMP "wexio-signing-cert.pfx"
+          [System.IO.File]::WriteAllBytes($certificatePath, [System.Convert]::FromBase64String("${{ secrets.WINDOWS_CERTIFICATE }}"))
+          $password = ConvertTo-SecureString -String "${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}" -AsPlainText -Force
+          $imported = Import-PfxCertificate -FilePath $certificatePath -Password $password -CertStoreLocation Cert:\CurrentUser\My
+          if (-not $imported) { throw "Failed to import Windows signing certificate" }
+          "WINDOWS_CERTIFICATE_THUMBPRINT=$($imported.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Prepare Windows signing config
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE_THUMBPRINT)) {
+            Write-Host "No Windows signing certificate configured; building unsigned installer."
+            exit 0
+          }
+
+          $config = @{
+            tauri = @{
+              bundle = @{
+                windows = @{
+                  certificateThumbprint = $env:WINDOWS_CERTIFICATE_THUMBPRINT
+                  digestAlgorithm = "sha256"
+                  timestampUrl = "http://timestamp.digicert.com"
+                }
+              }
+            }
+          } | ConvertTo-Json -Depth 10
+
+          Set-Content -Path "desktop/src-tauri/tauri.windows.conf.json" -Value $config -Encoding UTF8
+
       - name: Build installer
         working-directory: desktop
         run: npm run build

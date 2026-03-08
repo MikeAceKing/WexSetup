@@ -17,6 +17,7 @@ The desktop app under `desktop/` provides:
 - Tauri window controls for minimize, maximize, close, and desktop/minimize behavior
 - web applications opened inside Wexio webview windows
 - the desktop runtime needed for the in-Wexio web workspace experience
+- optional Windows code signing when certificate secrets are configured in GitHub Actions
 
 ## Artifacts
 

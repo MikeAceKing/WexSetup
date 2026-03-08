@@ -35,6 +35,15 @@ The default cross-platform build remains:
 npm run build
 ```
 
+## Windows signing
+
+Windows recognition and SmartScreen reputation depend on a real code-signing certificate. This repository is wired to use GitHub Actions secrets when available:
+
+- `WINDOWS_CERTIFICATE`: base64-encoded `.pfx`
+- `WINDOWS_CERTIFICATE_PASSWORD`: export password for the `.pfx`
+
+When those secrets are present, the publish workflow imports the certificate, generates a Windows-specific Tauri signing config, and signs the installer with SHA-256 plus DigiCert timestamping. Without them, Windows builds are produced unsigned.
+
 ## Install from terminal
 
 ### Windows

@@ -1,6 +1,6 @@
 [package]
 name = "wexio_desktop"
-version = "1.0.0"
+version = "1.0.1"
 description = "Native Wexio desktop wrapper"
 authors = ["Wexio"]
 edition = "2021"
